@@ -51,35 +51,28 @@ export const openPullRequest = async ({
   uid: string;
   dependencyName: string;
   dependencyVersion: string;
-}) => {
-  const pullRequest = await client.pullrequests.create({
+}) =>
+  client.pullrequests.create({
     workspace: repoWorkspace,
     repo_slug: repoSlug,
     // @ts-ignore
     _body: {
       title: `Upgrade ${dependencyName} to ${dependencyVersion}`,
       source: {
+        // @ts-ignore
         repository: {
-          workspace: repoWorkspace,
-          repo_slug: uid,
-          type: 'REPOSITORY',
+          full_name: `${repoWorkspace}/${uid}`,
         },
         branch: {
           name: 'master',
         },
       },
       destination: {
+        // @ts-ignore
         repository: {
           workspace: repoWorkspace,
           repo_slug: repoSlug,
-          type: 'REPOSITORY',
-        },
-        branch: {
-          name: 'master',
         },
       },
     },
   });
-
-  return pullRequest;
-};
