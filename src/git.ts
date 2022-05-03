@@ -1,20 +1,34 @@
 import simpleGit from 'simple-git';
-import Shid from 'short-unique-id';
 
 export const clone = async ({
   repository,
   tempDir,
+  uid,
 }: {
   repository: string;
   tempDir: string;
+  uid: string;
 }) => {
-  const uid = new Shid();
-  const localPath = `${tempDir}/${uid()}`;
-
-  console.log(`Cloning ${repository} to ${localPath}...`);
+  const localPath = `${tempDir}/${uid}`;
   const git = simpleGit(tempDir);
 
   await git.clone(repository, localPath);
 
   return localPath;
+};
+
+export const commitAndPush = async ({
+  repositoryPath,
+  dependencyName,
+  dependencyVersion,
+}: {
+  repositoryPath: string;
+  dependencyName: string;
+  dependencyVersion: string;
+}) => {
+  const git = simpleGit(repositoryPath);
+
+  await git.add('./*');
+  await git.commit(`Upgrade ${dependencyName} to ${dependencyVersion}`);
+  await git.push('origin', 'master');
 };

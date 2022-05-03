@@ -18,7 +18,7 @@ export const processPackageJson = async ({
 }) => {
   const packageJsonPath = `${repositoryPath}/${PACKAGE_JSON_FILENAME}`;
   const packageJson = (await jsonfile.readFile(packageJsonPath)) as PackageJson;
-  await jsonfile.writeFile(packageJsonPath, fn(packageJson));
+  await jsonfile.writeFile(packageJsonPath, fn(packageJson), { spaces: 2 });
 };
 
 type UpdateDependencyArgs = {
